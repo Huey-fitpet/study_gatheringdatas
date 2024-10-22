@@ -12,12 +12,8 @@ li > div > div > div.sa_text > a
 '''
 출력결과
 title count : 46
-title : 
-원-달러 환율 1,380원대 상승...7월 말 이후 최고
-
-content : 
-                        원-달러 환율이 장 초반부터 큰 폭으로 오르며 1,380원을 돌파했습니다....
-
+title : 부광약품, 3분기 영업익 32억…전년比 흑자 전환
+content : [서울=뉴시스] 박은비 기자 = 부광약품은 연결재무제표...
 '''
 
 def search_naver(selector, url = None) :
@@ -40,13 +36,12 @@ def main():
 
     print(f'title count : {len(reault_list)}')
     for title in reault_list :
-        print(f'title : {title.text}')
+        print(f'title : {title.text.strip()}')
         sub_list = search_naver(f'#dic_area', title.attrs['href'])
         for sub_title in sub_list: # 1개 나옴 
-            print(f'content : {sub_title.text}')
+            print(f'content : {sub_title.text.strip()}')
         print(f'--'*30)
-
-
+        
 
 if __name__ == '__main__':
     main()
