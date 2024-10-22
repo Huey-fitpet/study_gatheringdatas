@@ -25,33 +25,35 @@ type(soup)
 currency_prices = soup.select('td.tit')
 type(currency_prices) # <class 'bs4.element.ResultSet'> 
 
-for cp in currency_prices:
+print(f'Material Count : {len(currency_prices)}') 
+for num, cp in enumerate(currency_prices,start=1):
     # print(f'Tag : {cp}, Currency Price : {cp.text}') # type(cp) = <class 'bs4.element.Tag'>
-    print(f'Material Name : {cp.text}') # type(cp) = <class 'bs4.element.Tag'>
+    print(f'{num}. Material Name : {cp.text}') # type(cp) = <class 'bs4.element.Tag'>
     pass
 
 """
 결과 출력
-Material Name : 가스오일
-Material Name : 난방유
-Material Name : 천연가스
-Material Name : 구리
-Material Name : 납
-Material Name : 아연
-Material Name : 니켈
-Material Name : 알루미늄합금
-Material Name : 주석
-Material Name : 옥수수
-Material Name : 설탕
-Material Name : 대두
-Material Name : 대두박
-Material Name : 대두유
-Material Name : 면화
-Material Name : 소맥
-Material Name : 쌀
-Material Name : 오렌지주스
-Material Name : 커피
-Material Name : 코코아
+Material Count : 20
+1. Material Name : 가스오일
+2. Material Name : 난방유
+3. Material Name : 천연가스
+4. Material Name : 구리
+5. Material Name : 납
+6. Material Name : 아연
+7. Material Name : 니켈
+8. Material Name : 알루미늄합금
+9. Material Name : 주석
+10. Material Name : 옥수수
+11. Material Name : 설탕
+12. Material Name : 대두
+13. Material Name : 대두박
+14. Material Name : 대두유
+15. Material Name : 면화
+16. Material Name : 소맥
+17. Material Name : 쌀
+18. Material Name : 오렌지주스
+19. Material Name : 커피
+20. Material Name : 코코아
 """
 
 pass
