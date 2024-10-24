@@ -7,11 +7,17 @@ from pymongo import MongoClient
 
 '''
 이미지 다운로드
-target tag : #container > div > div > div.section01 > section > div.list-type038 > ul > li > div > div.news-con > a > strong
-#container > div > div > div.section01 > section > div.list-type038 > ul > li > div > div.news-con > p
-#container > div > div > div.section01 > section > div.list-type038 > ul > li > div > figure > a
-#container > div > div > div.section01 > section > div.list-type038 > ul > li > div > div.info-box01 > span.txt-time
+target tag : #container > div > div > div.section01 > section > div.list-type038 > ul > li > div 
+div.news-con > a > strong
+div.news-con > p
+figure > a
+div.info-box01 > span.txt-time
+
 저장 위치 
+./downloads/
+
+mongodb ip
+mongodb://192.168.0.207:27017/
 
 '''
 
@@ -22,14 +28,12 @@ def do_scrapping(url):
 
     target_tag = f'#container > div > div > div.section01 > section > div.list-type038 > ul > li > div ' # #majorList.list > li > div
 
-    #img_link_list = 
     news_list = soup.select(target_tag)
-    #tag = soup.find('ul#majorList.list')  # <div> 태그를 찾음
 
     results = [] 
     for news in news_list:
         title_link = news.select_one('.news-con > a > strong')
-        if title_link == None:
+        if title_link == None: # 광고가 중간에 있어서 넘김
             continue
         print(f'title: {title_link.text}') 
              
@@ -38,7 +42,7 @@ def do_scrapping(url):
 
         date = news.select_one('.info-box01 > .txt-time')
         img_link = news.select_one('figure > a > img')
-        if img_link == None:
+        if img_link == None: # 이미지가 없는 기사가 있어서 넘김
             continue
         print(f'date: {date.text}, link: {img_link.attrs["src"]}')
 
@@ -104,7 +108,7 @@ def main() :
 
     result_ids = insert_recode_in_mongo(ip_add, db_name, col_name, news_content_list)
     # 입력된 문서의 ID 출력
-    print('Inserted user id:', result_ids.inserted_ids)
+    print('Inserted user id num:', len(result_ids.inserted_ids))
     return
 
 if __name__ == '__main__':
