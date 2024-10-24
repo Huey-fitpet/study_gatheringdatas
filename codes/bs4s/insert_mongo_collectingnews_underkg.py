@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
+
 url = f'http://underkg.co.kr/news'
 
 
