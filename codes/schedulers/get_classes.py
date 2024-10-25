@@ -5,6 +5,10 @@ class getfuctions:
 
     message = str(f'in get functions')
 
+
+    def __init__():
+        pass
+
     def message_print():
         # 현재 시간을 UTC로 출력
         current_utc_time = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')

@@ -1,17 +1,18 @@
 
-import get_classes
-
+from get_classes import getfuctions as gf
+from apscheduler.schedulers.background import BackgroundScheduler
 
 def main(message):
+
+    # 스케쥴러 등록 
+    
+
+
+    # 정지 예방
     count = 0
     while True:
         print(f'{message} : count - {count}')
         count += 1
-        
-
-        get_classes.getfuctions.message_print()
-        get_classes.getfuctions.job_print()
-        print(f'message : {get_classes.getfuctions.message}')
 
         pass
     
