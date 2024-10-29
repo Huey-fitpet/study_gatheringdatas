@@ -31,17 +31,22 @@ def main():
 
     # - 가능 여부에 대한 OK 받음
 
-    content_lists = cy.run_content_from_youtube(browser)
-
-    if content_lists: # 값이 있다면 돌았을 것, 돌았는데 값이 없는 경우 처리만 더 생각하면 됨.
+    try:
+        content_lists = cy.run_content_from_youtube(browser)
+    except Exception as e :
+        print(e)
+    finally:
         browser.quit()
 
     # MongoDB 서버에 연결 : Both connect in case local and remote
     client = MongoClient(ip_add)
 
-    result_list = cm.insert_recode_in_mongo(client, db_name, col_name, content_lists)
-
-    client.close()
+    try:
+        result_list = cm.insert_recode_in_mongo(client, db_name, col_name, content_lists)
+    except Exception as e :
+        print(e)
+    finally:
+        client.close()
     print(f'insert id list count : {len(result_list.inserted_ids)}')
     pass
 
