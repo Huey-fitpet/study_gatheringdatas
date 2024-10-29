@@ -33,7 +33,7 @@ class content_youtube:
         작성일 : #published-time-text > a
         댓글 : #content-text > span
         좋아요 : #vote-count-middle
-        싫어요 : execption 나올것?
+        싫어요 : 싫어요 갯수 출력하는 태그 없는 듯?
 
         '''
 
