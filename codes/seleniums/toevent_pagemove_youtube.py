@@ -1,27 +1,13 @@
-# * 웹 크롤링 동작
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
+
+# from selenium.webdriver.chrome.options import Options
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 import time
 
 class content_youtube:
-    def run_content_from_youtube():
-        webdriver_manager_directory = ChromeDriverManager().install()
+    def run_content_from_youtube(browser):
 
-        # ChromeDriver 실행
-        browser = webdriver.Chrome(service=ChromeService(webdriver_manager_directory))
-
-        # Chrome WebDriver의 capabilities 속성 사용
-        capabilities = browser.capabilities
-
-        # - 주소 입력(https://www.w3schools.com/)
-        target_url = f'https://www.youtube.com/watch?v=iQZCVbseEMQ'
-        browser.get(target_url)
-
-        # - 가능 여부에 대한 OK 받음
         '''
 
         - 수집 데이터 mongodb에 insert
@@ -43,13 +29,12 @@ class content_youtube:
         time.sleep(5)
         element_value = f'body'
         element_body = browser.find_element(by=By.CSS_SELECTOR, value=element_value)
-        # element_body.send_keys(f'demonic19@nate.com')
-        from selenium.webdriver.common.keys import Keys
+
+
 
         for num in range(15):
             time.sleep(1)
             element_body.send_keys(Keys.PAGE_DOWN)
-
 
         id_tag = f'#author-text > span'
         date_tag = f'#published-time-text > a'
@@ -63,13 +48,6 @@ class content_youtube:
 
         ret_dict_list = []
         for num, (id, date, content, vote_cnt) in enumerate(zip(ls_id, ls_date, ls_content, ls_vote_cnt),start=1):
-            
-            # print(f'댓글 번호: {num}')
-            # print(f'작성자: {id.text}')
-            # print(f'작성일: {date.text}')
-            # print(f'댓글 내용: {content.text}')
-            # print(f'좋아요 수: {vote_cnt.text}')
-            # print('---')  # 각 댓글 사이에 구분선 추가
 
             # 각 댓글 정보를 딕셔너리로 저장
             comment_data = {
@@ -86,6 +64,5 @@ class content_youtube:
 
             pass
         
-        browser.quit()
         return ret_dict_list
 pass
