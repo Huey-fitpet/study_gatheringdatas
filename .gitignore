@@ -1,3 +1,6 @@
 *.png
+*.json
+*.txt
+*.htm
 downloads/
 __pycache__/
