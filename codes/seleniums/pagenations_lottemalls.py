@@ -96,7 +96,7 @@ class ProductInfoScraper:
 
         final_goods_list = []
         print(len(url_list))
-        for index, url in enumerate(url_list[750:], start=750):
+        for index, url in enumerate(url_list[750:], start=750): # 시간이 너무 오래 걸려서 일부만 수행 
             browser.get(url)
             time.sleep(1)
 
