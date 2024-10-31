@@ -4,8 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains as ac
 
-from bs4 import BeautifulSoup
-import requests
 import time 
 
 class ProductInfoScraper:
@@ -31,7 +29,9 @@ class ProductInfoScraper:
         #s-search-app > div.srchResultProductArea > div.s-goods-layout.s-goods-layout__grid > div.s-goods-grid.s-goods-grid--col-4 > ul > li > div > div.s-goods__thumbnail > a
 
         url 넘어가서 
-        section[data-v-06e72560].pd-widget1
+        태그가 동적으로 생성? 되어서 셀레니움으로 가지고 와야함.
+        section[data-v-06e72560].pd-widget1 
+
         상품명, 가격, 상품상세
         #stickyTopParent > div.productDetailTop > section.pd-widget1 > div.pd-widget1__info-box > h2
         상품명  #stickyTopParent > div.productDetailTop > section.pd-widget1 > div.pd-widget1__info-box > h2
@@ -62,50 +62,20 @@ class ProductInfoScraper:
         goods_name_tag = f'#stickyTopParent > div.productDetailTop > section.pd-widget1 > div.pd-widget1__info-box > h2'
         # 'section[data-v-06e72560].pd-widget1' # '#stickyTopParent > div.productDetailTop > section.pd-widget1 > div.pd-widget1__info-box > h2'
         goods_price_tag = f'#stickyTopParent > div.productDetailTop > section.pd-price > div > dl > dd > strong'
-
-
+        url_list = []
         while True :
             time.sleep(1)
             
             goods_url_list = browser.find_elements(by=By.CSS_SELECTOR, value=goods_tag_list)
-            url_list = []
+
+            # 리스트를 전부 담았다가 한번에 상품정보 빼는 게 나음
+
             for num, news in enumerate(goods_url_list):
                 target_link = news.get_attribute(f'href')
-                print(target_link)
+                # print(target_link)
                 url_list.append(target_link)
                 pass
 
-            for index, url in enumerate(url_list):
-                browser.get(url)
-                time.sleep(1)
-
-                temp = browser.find_elements(by=By.CSS_SELECTOR, value=goods_name_tag)
-
-                browser.back()
-                time.sleep(1)
-                pass
-            '''
-news_list = browser.find_elements(by=By.CSS_SELECTOR, value=news_list_tag).copy()
-
-import time
-url_list = []
-for num, news in enumerate(news_list):
-    target_link = news.get_attribute(f'href')
-    print(target_link)
-    url_list.append(target_link)
-    pass
-
-for index, url in enumerate(url_list):
-    browser.get(url)
-    time.sleep(1)
-    browser.back()
-    time.sleep(1)
-    pass
-
-            '''
-
-
-            
             pagination_list = browser.find_elements(by=By.CSS_SELECTOR, value=page_list_tag)
             num = 0
             for index in range(len(pagination_list)):
@@ -121,4 +91,29 @@ for index, url in enumerate(url_list):
             ac(browser).key_down(Keys.END).perform() # 안하면 에러남 
             time.sleep(1)
             pagination_tag.click()
+
             pass
+
+        final_goods_list = []
+        print(len(url_list))
+        for index, url in enumerate(url_list[750:], start=750):
+            browser.get(url)
+            time.sleep(1)
+
+            good_name = browser.find_elements(by=By.CSS_SELECTOR, value=goods_name_tag)
+            good_price = browser.find_elements(by=By.CSS_SELECTOR, value=goods_price_tag)
+
+            good_detail = {
+                'product_name' : good_name[0].text,
+                'product_price' : good_price[0].text,
+            }
+            final_goods_list.append(good_detail)
+
+            pass
+        pass
+
+        return final_goods_list
+
+
+
+

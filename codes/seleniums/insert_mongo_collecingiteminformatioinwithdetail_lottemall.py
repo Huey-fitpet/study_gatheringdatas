@@ -13,7 +13,7 @@ from pymongo import MongoClient
 
 def main():
 
-    ip_add = f'mongodb://192.168.0.63:27017/'
+    ip_add = f'mongodb://192.168.0.91:27017/'
     db_name = f'lotte_db_sanghoonlee'
     col_name = f'lotte_col_sanghoonlee'
 
@@ -31,25 +31,24 @@ def main():
     browser.get(target_url)
 
     # - 가능 여부에 대한 OK 받음
-    content_lists = ps.get_product_info(browser)
-    # try:
-    #     content_lists = ps.get_product_info(browser)
-    # except Exception as e :
-    #     print(e)
-    # finally:
-    #     browser.quit()
+    try:
+        content_lists = ps.get_product_info(browser)
+    except Exception as e :
+        print(e)
+    finally:
+        browser.quit()
 
-    # # MongoDB 서버에 연결 : Both connect in case local and remote
-    # client = MongoClient(ip_add)
+    # MongoDB 서버에 연결 : Both connect in case local and remote
+    client = MongoClient(ip_add)
 
-    # try:
-    #     result_list = cm.insert_recode_in_mongo(client, db_name, col_name, content_lists)
-    # except Exception as e :
-    #     print(e)
-    # finally:
-    #     client.close()
-    # print(f'insert id list count : {len(result_list.inserted_ids)}')
-    # pass
+    try:
+        result_list = cm.insert_recode_in_mongo(client, db_name, col_name, content_lists)
+    except Exception as e :
+        print(e)
+    finally:
+        client.close()
+    print(f'insert id list count : {len(result_list.inserted_ids)}')
+    pass
 
 
 if __name__ == '__main__':
