@@ -9,23 +9,46 @@ https://api.openweathermap.org/geo/1.0/direct?q=seoul&appid=39fb7b1c6d4e11e7483a
 http://api.openweathermap.org/geo/1.0/direct?q={city name}&appid={API key}
 '''
 import json
-class CoordiantesByLocationName:
+class legal_district_query:
 
-    def nametogeocoordinates(cityname = None) :
-        uri = f'https://api.openweathermap.org/geo/1.0/direct'
+    def send_api(cityname = None, admCode = None) :
+        url = f'http://api.vworld.kr/ned/data/admCodeList'
         params ={
-            'q' : cityname, 
-            'appid' : '39fb7b1c6d4e11e7483aabcb737ce7b0'
+            'key' : 'C008E763-541C-3B93-B0E6-9C218A8C7038', 
+            'format' : 'json', 
+            'numOfRows' : '17', 
+            'pageNo' : '1'
+            }
+        
+        if admCode :
+            url = f'http://api.vworld.kr/ned/data/admSiList'
+            params ={
+                'key' : 'C008E763-541C-3B93-B0E6-9C218A8C7038', 
+                'admCode' : admCode, 
+                'format' : 'json', 
+                'numOfRows' : '17', 
+                'pageNo' : '1'
             }
 
-        response = requests.get(uri, params=params)
+        '''
+        서울 + 특별시
+        인천 + 광역시
+        제주 + 
+        경북 경상북도
+        전남 전라남도
+        강원 + 도
+        '''
+        response = requests.get(url, params=params)
         print(response.status_code)
         if response.status_code == 200 :
             if response.text !='[]' :
                 content = json.loads(response.content)
-
-                return {'lat' : int(content[0]['lat']), 'lon' : int(content[0]['lon'])}
-                pass
+                find_code = None
+                for city in content['admVOList']['admVOList'] :
+                    if city['lowestAdmCodeNm'] == cityname :
+                        find_code = city['admCode']
+                return find_code
+                # return {'lat' : int(content[0]['lat']), 'lon' : int(content[0]['lon'])}
             else :
                 print(f"error : result empty {response.content}")
                 return None
@@ -95,3 +118,10 @@ class ApiRequester:
         else :
             print(f"error : {response.status_code}")
             return None       
+        
+
+
+if __name__ == '__main__':
+    # legal_district_query.send_api(f'인천광역시')
+    # legal_district_query.send_api(f'계양구',  f'28')
+    legal_district_query.send_api(f'강남구',  f'11')

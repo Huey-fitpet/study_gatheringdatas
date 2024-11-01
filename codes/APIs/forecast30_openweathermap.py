@@ -1,5 +1,6 @@
 
 from CoordinatesByLocationNameWithErrors import CoordiantesByLocationName as cn
+from CoordinatesByLocationNameWithErrors import ApiRequester as ar
 import requests
 #uri 소스에서 넣을 때 길이가 256자 이내로 
 
@@ -9,6 +10,10 @@ https://api.openweathermap.org/geo/1.0/direct?q=seoul&appid=39fb7b1c6d4e11e7483a
 https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 "lat":37.5666791,"lon":126.9782914,
 날씨 정보 수집(대상:도쿄, 괌, 모나코)
+
+class ApiRequester:
+
+    def send_api(base_url, params, keys = None):
 '''
 
 def run(city_list):
@@ -52,7 +57,15 @@ def run(city_list):
 
 def main():
     city_list = ['도쿄','괌','모나코']
-    run(city_list)
+    # run(city_list)
+    # send_api(base_url, params, keys = None):
+    base_url = f'https://api.openweathermap.org/geo/1.0/direct'
+    params ={
+            'q' : '도쿄', 
+            'appid' : '39fb7b1c6d4e11e7483aabcb737ce7b0'
+            }
+    key_list = ['lat','lon']
+    temp = ar.send_api(base_url, params, key_list)
     pass
 
 if __name__ == '__main__':
