@@ -106,6 +106,7 @@ def main():
     increment_value = 999
     while True:
         data_bikes = pd.concat([data_bikes, seoul_bike_list.send_api(uri, key, prev_item, prev_item + increment_value)], ignore_index=True)
+        # 최댓값이 변하지 않으면 탈출
         if escape_cnt != len(data_bikes) :
             escape_cnt = len(data_bikes)
         else :
