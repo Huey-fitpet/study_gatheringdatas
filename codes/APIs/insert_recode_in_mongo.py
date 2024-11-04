@@ -9,6 +9,7 @@ class connect_mongo:
         collection = db[collectionname]
 
         # 데이터 입력
-        results = collection.insert_many(input_list)
+        # results = collection.insert_many(input_list)
+        results = collection.insert_many(input_list.to_dict(orient='records'))
 
         return results
