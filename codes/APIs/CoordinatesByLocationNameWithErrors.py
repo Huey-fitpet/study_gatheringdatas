@@ -36,12 +36,19 @@ class CoordiantesByLocationName:
 
 class ApiRequester:
 
-    def make_prams() :
-        params = {}
+    service_key = f''
+
+    def __init__(self, service_key) -> None:
+        self.service_key = service_key
+
+
+    def make_prams(self, params) :
+        params['appid'] = self.service_key
         return params
     
     
-    def send_api(base_url, params, keys = None):
+    def send_api(self, base_url, params, keys = None):
+        params = self.make_prams(params)
         response = requests.get(base_url, params=params)
         print(response.status_code)
         if response.status_code == 200 :

@@ -60,12 +60,18 @@ def main():
     # run(city_list)
     # send_api(base_url, params, keys = None):
     base_url = f'https://api.openweathermap.org/geo/1.0/direct'
-    params ={
-            'q' : '도쿄', 
-            'appid' : '39fb7b1c6d4e11e7483aabcb737ce7b0'
-            }
+
+        # params ={
+        #     'q' : '도쿄', 
+        #     'appid' : '39fb7b1c6d4e11e7483aabcb737ce7b0'
+        #     }
     key_list = ['lat','lon']
-    temp = ar.send_api(base_url, params, key_list)
+    openweather = ar('39fb7b1c6d4e11e7483aabcb737ce7b0')
+    for city in city_list:
+        params ={
+            'q' : city
+        }
+        temp = openweather.send_api(base_url, params, key_list)
     pass
 
 if __name__ == '__main__':
