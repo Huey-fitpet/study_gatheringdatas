@@ -10,6 +10,8 @@ class connect_mongo:
 
         # 데이터 입력
         # results = collection.insert_many(input_list)
+        # data frame insert 시 to_dict 해야함. 아니면 아래 에러가 남
+        # The truth value of a DataFrame is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
         results = collection.insert_many(input_list.to_dict(orient='records'))
 
         return results

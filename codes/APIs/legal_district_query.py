@@ -63,7 +63,6 @@ class ApiRequester:
         params = {}
         return params
     
-    
     def send_api(base_url, params, keys = None):
         response = requests.get(base_url, params=params)
         print(response.status_code)
@@ -96,28 +95,6 @@ class ApiRequester:
             print(f"error : {response.status_code}")
             return None       
         pass
-
-    def nametogeocoordinates(cityname = None) :
-        uri = f'https://api.openweathermap.org/geo/1.0/direct'
-        params ={
-            'q' : cityname, 
-            'appid' : '39fb7b1c6d4e11e7483aabcb737ce7b0'
-            }
-
-        response = requests.get(uri, params=params)
-        print(response.status_code)
-        if response.status_code == 200 :
-            if response.text !='[]' :
-                content = json.loads(response.content)
-
-                return {'lat' : int(content[0]['lat']), 'lon' : int(content[0]['lon'])}
-                pass
-            else :
-                print(f"error : result empty {response.content}")
-                return None
-        else :
-            print(f"error : {response.status_code}")
-            return None       
         
 
 

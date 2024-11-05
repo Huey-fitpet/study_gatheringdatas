@@ -36,19 +36,7 @@ class CoordiantesByLocationName:
 
 class ApiRequester:
 
-    service_key = f''
-
-    def __init__(self, service_key) -> None:
-        self.service_key = service_key
-
-
-    def make_prams(self, params) :
-        params['appid'] = self.service_key
-        return params
-    
-    
-    def send_api(self, base_url, params, keys = None):
-        params = self.make_prams(params)
+    def send_api(base_url, params, keys = None):
         response = requests.get(base_url, params=params)
         print(response.status_code)
         if response.status_code == 200 :
@@ -102,3 +90,35 @@ class ApiRequester:
         else :
             print(f"error : {response.status_code}")
             return None       
+        
+
+if __name__ in '__main__':
+    
+    city_list = ['도쿄','괌','모나코']
+    # run(city_list)
+    # send_api(base_url, params, keys = None):
+    
+    key_list = ['lat', 'lon']
+    pub_key = '39fb7b1c6d4e11e7483aabcb737ce7b0'
+    for city in city_list:
+        base_url = f'https://api.openweathermap.org/geo/1.0/direct'
+        
+        params={}
+        params['q'] = city
+        params['appid'] = pub_key
+
+        result_geo = ApiRequester.send_api(base_url, params, key_list)
+
+        base_url = f'https://pro.openweathermap.org/data/2.5/weather'
+        
+        params_w = {}
+        for geo in result_geo:
+            for key in key_list:
+                params_w[key] = geo[key]
+        params_w['appid'] = pub_key
+        result_cont = ApiRequester.send_api(base_url, params_w)
+
+        print(result_cont)
+
+
+    pass
