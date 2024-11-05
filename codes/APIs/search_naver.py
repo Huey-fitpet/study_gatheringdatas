@@ -107,24 +107,6 @@ def main():
     
     data_items = naver_search.send_api(uri, params, headers)
 
-    # # key = f'445551536d64656d3438576f436178'
-    # data_bikes = pd.DataFrame()
-    
-    # # (대여소 수 : '18.11월말기준 1,471개소)
-    # escape_cnt = -1
-    # prev_item = 1
-    # increment_value = 999
-    # while True:
-    #     data_bikes = pd.concat([data_bikes, naver_search.send_api(uri, headers, prev_item, prev_item + increment_value)], ignore_index=True)
-    #     # 최댓값이 변하지 않으면 탈출
-    #     if escape_cnt != len(data_bikes) :
-    #         escape_cnt = len(data_bikes)
-    #     else :
-    #         break
-    #     prev_item += increment_value
-     
-    # # seoul_bike_list.print_graph(data_bikes)
-
     # MongoDB 서버에 연결 : Both connect in case local and remote
     ip_add = f'mongodb://192.168.0.91:27017/'
     db_name = f'study_finance_shl'
@@ -137,7 +119,7 @@ def main():
         result_list = cm.insert_recode_in_mongo(client, db_name, info_col_name, data_items)
         print(f'insert id list count : {len(result_list.inserted_ids)}')
         list_dataframe = data_items[['title', 'link']] # 기억을 위해 이름, link 씀
-        list_dataframe['goods_id'] = result_list.inserted_ids
+        list_dataframe['goods_id'] = result_list.inserted_ids # 상세정보 데이터의 id를 list col에 저장
         result_list = cm.insert_recode_in_mongo(client, db_name, list_col_name, list_dataframe)
         print(f'insert id list count : {len(result_list.inserted_ids)}')
     except Exception as e :
