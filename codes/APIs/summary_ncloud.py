@@ -8,7 +8,7 @@ from insert_recode_in_mongo import connect_mongo as cm
 # mongo DB 동작
 from pymongo import MongoClient
 # from legal_district_query  import ApiRequester as ar
-
+from config_reader import read_config # config read 용 
 
 class summary_ncloud:
 
@@ -104,15 +104,15 @@ class summary_ncloud:
 
 def main():
 
-
+    config = read_config()
     uri = f'https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize'
     # params = {
     #     'query' : '진주',
     #     'display' : '100'
     # }
     headers = {
-        'X-NCP-APIGW-API-KEY-ID' : '4iiir27p8s',
-        'X-NCP-APIGW-API-KEY' : 'f3GBdtj2n9avMplP0bJKsx14GzTPJxstqZ3S4xni',
+        'X-NCP-APIGW-API-KEY-ID' : config['Ncloud_Key']['X-NCP-APIGW-API-KEY-ID'],
+        'X-NCP-APIGW-API-KEY' : config['Ncloud_Key']['X-NCP-APIGW-API-KEY'],
         'Content-Type' : 'application/json'
     }
     

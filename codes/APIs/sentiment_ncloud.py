@@ -5,7 +5,10 @@ from bs4 import BeautifulSoup as bs
 import pandas as pd
 import pydeck as pdk
 
-from insert_recode_in_mongo import connect_mongo as cm
+# 만든 class
+from insert_recode_in_mongo import connect_mongo as cm # insert mongo
+from config_reader import read_config # config read 용 
+
 
 # mongo DB 동작
 from pymongo import MongoClient
@@ -21,6 +24,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+
 
 class content_youtube:
     def run_content_from_youtube(browser):
@@ -170,9 +174,12 @@ def main():
     #     'query' : '진주',
     #     'display' : '100'
     # }
+
+    config = read_config()
+
     headers = {
-        'X-NCP-APIGW-API-KEY-ID' : '4iiir27p8s',
-        'X-NCP-APIGW-API-KEY' : 'f3GBdtj2n9avMplP0bJKsx14GzTPJxstqZ3S4xni',
+        'X-NCP-APIGW-API-KEY-ID' : config['Ncloud_Key']['X-NCP-APIGW-API-KEY-ID'],
+        'X-NCP-APIGW-API-KEY' : config['Ncloud_Key']['X-NCP-APIGW-API-KEY'],
         'Content-Type' : 'application/json'
     }
     

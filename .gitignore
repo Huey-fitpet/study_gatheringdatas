@@ -4,3 +4,4 @@
 *.htm
 downloads/
 __pycache__/
+config.ini

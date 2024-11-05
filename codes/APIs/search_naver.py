@@ -4,7 +4,10 @@ import json
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 import pydeck as pdk
+
 from insert_recode_in_mongo import connect_mongo as cm
+from config_reader import read_config # config read 용 
+
 # mongo DB 동작
 from pymongo import MongoClient
 # from legal_district_query  import ApiRequester as ar
@@ -89,6 +92,7 @@ class naver_search:
 
 def main():
 
+    config = read_config()
     # uri = f'http://openapi.seoul.go.kr:8088/{key}/json/bikeList/{start}/{end}/'
     serviceid = f'shop'
     uri = f'https://openapi.naver.com/v1/search/{serviceid}'
@@ -97,8 +101,8 @@ def main():
         'display' : '100'
     }
     headers = {
-        'X-Naver-Client-Id' : 'XCDKBpVoYKxapr3zzj_S',
-        'X-Naver-Client-Secret' : 'f5X3Ech1vU'
+        'X-Naver-Client-Id' : config['Naver_Key']['X-Naver-Client-Id'],
+        'X-Naver-Client-Secret' : config['Naver_Key']['X-Naver-Client-Secret']
     }
     
     data_items = naver_search.send_api(uri, params, headers)
