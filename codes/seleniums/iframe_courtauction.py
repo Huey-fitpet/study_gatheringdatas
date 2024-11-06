@@ -115,7 +115,12 @@ if __name__ == "__main__" :
     # ChromeDriver 실행
     browser = webdriver.Chrome(service=ChromeService(webdriver_manager_directory))
     # try - finally 자원 관리 필요 
-    case_data = iframe_test.run(browser)
+    try:
+        case_data = iframe_test.run(browser)
+    except Exception as e :
+        print(e)
+    finally:
+        browser.quit()
 
     # MongoDB 서버에 연결 : Both connect in case local and remote
     ip_add = f'mongodb://192.168.0.91:27017/'
