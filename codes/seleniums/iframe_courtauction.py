@@ -45,39 +45,14 @@ indexFrame
 webdriver_manager_directory = ChromeDriverManager().install() # 딱 한번 수행이라 밖에
 
 class iframe_test : 
-    # 쓸 때 browser 관리 
-    def run(browser):
-
-        target_url = f'https://www.courtauction.go.kr/'
+    
+    def get_data(browser: webdriver.Chrome) -> pd.DataFrame:
+        # tag 목록 나중에 빼서 관리 할 수 있도록 
         case_id_tag = f'#contents > div.table_contents > form:nth-child(1) > table > tbody > tr > td:nth-child(2)'
         property_address_tag = f'#contents > div.table_contents > form > table > tbody > tr > td:nth-child(4)'
         estimated_value_tag = f'#contents > div.table_contents > form > table > tbody > tr > td.txtright'
-        btn_tag = f'#main_btn > a'
-        sel_list_tag = f'#idJiwonNm1'
-
-        # Chrome WebDriver의 capabilities 속성 사용
-        capabilities = browser.capabilities
-
-        # - 주소 입력(https://www.w3schools.com/)
-        browser.get(target_url)
         
-        # frame 선택 - 이게 되야 element 접근 가능
-        browser.switch_to.frame("indexFrame")
-        time.sleep(1)
-
-        # 리스트 선택
-        element_select = browser.find_element(by=By.CSS_SELECTOR, value=sel_list_tag)
-        # Select 객체 생성
-        select = Select(element_select)
-        index = 8 # 인천 지방 법원
-        select.select_by_index(index)
-        time.sleep(1)
-
-        # 클릭 넣기 
-        element_btn = browser.find_element(by=By.CSS_SELECTOR, value=btn_tag)
-        element_btn.click()
-        time.sleep(1)
-        
+        # get data : return data 
         case_id_list = browser.find_elements(by=By.CSS_SELECTOR, value=case_id_tag)
         property_address_list = browser.find_elements(by=By.CSS_SELECTOR, value=property_address_tag)
         estimated_value_list = browser.find_elements(by=By.CSS_SELECTOR, value=estimated_value_tag)
@@ -87,7 +62,6 @@ class iframe_test :
             "property_address" : [],
             "estimated_value" : []
         }
-
 
         for number, row in enumerate(case_id_list):
             print(f'number:{number}, title : {row.accessible_name}')
@@ -109,6 +83,42 @@ class iframe_test :
             case_data["estimated_value"].append(row.accessible_name)
 
         return pd.DataFrame(case_data)
+    
+    def select_court(browser: webdriver.Chrome) -> webdriver.Chrome:
+                
+        target_url = f'https://www.courtauction.go.kr/'
+        btn_tag = f'#main_btn > a'
+        sel_list_tag = f'#idJiwonNm1'
+
+        # - 주소 입력(https://www.w3schools.com/)
+        browser.get(target_url)
+        
+        # frame 선택 - 이게 되야 element 접근 가능
+        browser.switch_to.frame("indexFrame")
+        time.sleep(1)
+
+        # 리스트 선택
+        element_select = browser.find_element(by=By.CSS_SELECTOR, value=sel_list_tag)
+        # Select 객체 생성
+        select = Select(element_select)
+        index = 8 # 인천 지방 법원
+        select.select_by_index(index)
+        time.sleep(1)
+
+        # 클릭 넣기 
+        element_btn = browser.find_element(by=By.CSS_SELECTOR, value=btn_tag)
+        element_btn.click()
+        time.sleep(1)
+
+        return browser
+
+
+    # 쓸 때 browser 관리 
+    def run(browser: webdriver.Chrome) -> pd.DataFrame:
+        iframe_test.select_court(browser) 
+        return iframe_test.get_data(browser)
+    
+    
 
 
 if __name__ == "__main__" :
