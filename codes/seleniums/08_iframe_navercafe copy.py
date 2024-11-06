@@ -31,12 +31,16 @@ class iframe_test :
 
         # - 주소 입력(https://www.w3schools.com/)
         browser.get(target_url)
+        
+        # 나중에 클릭 넣기 
 
-        # - 가능 여부에 대한 OK 받음
-        pass
-        # - html 파일 받음(and 확인)
-        html = browser.page_source
-        print(html)
+        browser.switch_to.frame("cafe_main")
+        time.sleep(2)
+        cafe_list = browser.find_elements(by=By.CSS_SELECTOR, value=title_tag)
+        
+        for number, row in enumerate(cafe_list):
+            print(f'number:{number}, title : {row.text}')
+            
         pass
 
 
