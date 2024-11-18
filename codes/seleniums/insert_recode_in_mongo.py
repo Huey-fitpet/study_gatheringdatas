@@ -1,4 +1,4 @@
-
+import pandas as pd
 
 class connect_mongo:
     def insert_recode_in_mongo(client, dbname, collectionname, input_list):
@@ -9,6 +9,15 @@ class connect_mongo:
         collection = db[collectionname]
 
         # 데이터 입력
-        results = collection.insert_many(input_list)
+        if isinstance(input_list, pd.DataFrame): # DataFrame인 경우
+            results = collection.insert_many(input_list.to_dict(orient='records'))
+        elif isinstance(input_list, list): # 리스트인 경우
+            results = collection.insert_many(input_list)
+        elif isinstance(input_list, dict): # 딕셔너리인 경우
+            results = collection.insert_one(input_list)
+        else:
+            print("error")
+
+        return results
 
         return results
